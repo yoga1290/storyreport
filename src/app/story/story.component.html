@@ -1,0 +1,106 @@
+
+<mat-card class="example-card">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <!-- <button mat-icon-button><mat-icon>add</mat-icon></button> -->
+
+    <mat-card-title>
+      <!-- <mat-form-field> -->
+        <mat-select placeholder="Select page" [(value)]="selectedPage">
+          <mat-option
+            *ngFor="let p of Pages"
+            [value]="p">
+            {{p.title}}</mat-option>
+        </mat-select>
+      <!-- </mat-form-field> -->
+
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="selectedPage.page">
+      <div class="page-description">
+        {{selectedPage.description}}
+      </div>
+
+      <mat-form-field>
+        <input matInput placeholder="Start Hash" [(value)]="startHash">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="End Hash" [(value)]="endHash">
+      </mat-form-field>
+
+
+      <div *ngFor="let q of queryString" class="query-string">
+        <mat-form-field>
+          <input matInput placeholder="query key" [(ngModel)]="q.key">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="value" [(ngModel)]="q.value">
+        </mat-form-field>
+      </div>
+
+      <button
+        mat-stroked-button
+        (click)="queryString.push({key:'', value:''})">
+        + query string
+      </button>
+      <button
+        class="page-preview"
+        mat-icon-button
+        color="primary"
+        (click)="pagePreview()">
+        <mat-icon aria-label="Example icon-button with a heart icon">open_in_browser</mat-icon>
+      </button>
+
+    </mat-card-subtitle>
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  <mat-card-content *ngIf="selectedPage.page">
+
+
+
+
+    <form
+        [ngStyle]="{'display':'none'}"
+        [name]="id_form"
+        method="post"
+        enctype="multipart/form-data"
+        target="_self"
+        action="http://localhost:8080/test">
+      <input type="file" *ngFor="let d of Keys(data)" [id]="'infile-' + d" class="infile" name="file" accept="video/mp4">
+      <input type="text" name="data" [value]="jsonData">
+      <input type="submit" [id]="id_submit" value="OK">
+    </form>
+
+
+      <app-video
+          *ngFor="let d of Keys(data)"
+          [index] = "d"
+          (update)="data[d]=$event; test(data);"
+          (delete)="onDelete(d)"></app-video>
+
+
+
+
+          <mat-card
+            class="example-card">
+            <div class="btn-video-upload-container">
+              <button
+                mat-icon-button
+                class="btn-video-upload"
+                (click)="data.push({})">
+                <mat-icon>movie_filter</mat-icon></button>
+            </div>
+          </mat-card>
+
+    <button
+      class="btn-submit"
+      (click)="submit()"
+      mat-raised-button
+      color="primary">
+      <mat-icon>cloud_upload</mat-icon>
+      Upload & process</button>
+
+  </mat-card-content>
+
+  <mat-card-actions>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,42 @@
+.btn-video-upload mat-icon {
+  font-size: 80px;
+  width: 80px;
+}
+
+.btn-video-upload {
+  left: -80px;
+  width: 160px;
+  height: 160px;
+  position: absolute;
+}
+
+.btn-video-upload-container {
+  position: relative;
+  left: 50%;
+  width: 50%;
+  height: 200px;
+}
+
+mat-select {
+    font-size: 32px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-infix {
+  width: 100%;
+}
+
+.query-string {
+  margin-top: 10px;
+}
+
+.page-description {
+  margin-bottom: 20px;
+}
+
+.page-preview {
+  float: right;
+}

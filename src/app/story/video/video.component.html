@@ -1,0 +1,55 @@
+
+
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>
+      <button mat-icon-button class="video-close" (click)="delete.emit()"><mat-icon>close</mat-icon></button>
+    </mat-card-title>
+
+    <!-- <mat-card-subtitle>Video</mat-card-subtitle> -->
+
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+
+
+  <!-- <input type="file" [id]="index_infile" class="infile" accept="video/mp4"> -->
+
+  <div class="btn-video-upload-container" *ngIf="!showVideo">
+    <button mat-icon-button class="btn-video-upload" (click)="infileClick()"><mat-icon>movie</mat-icon></button>
+  </div>
+
+  <div [ngStyle]="{'display': showVideo ? '':'none'}">
+    <div class="video-container">
+      <div class="video-border" [ngStyle]="{'width': videoBorderWidth}"></div>
+      <video [id]="index_video" controls></video>
+      <div class="video-border"></div>
+    </div>
+    <mat-card-content>
+      <app-timer
+        (update)="data.time = $event; update();">
+      </app-timer>
+
+      <div>
+        <div *ngFor="let color of colorKeys" (click)="data.colorKey = color; update();" class="color-picker">
+          <mat-icon [ngStyle]="{'color': color}">{{(color === data.colorKey) ? 'check_circle':'lens'}}</mat-icon>
+        </div>
+      </div>
+
+      <mat-slider
+          thumbLabel
+          min="1"
+          max="100"
+          step="1"
+          value="0"
+          (change)="data.crop.offset.x = $event.value/100; update();">
+      </mat-slider>
+    </mat-card-content>
+
+  </div>
+
+
+
+  <!-- <mat-card-actions>
+    <button mat-button (click)="delete.emit()">Remove</button>
+  </mat-card-actions> -->
+</mat-card>

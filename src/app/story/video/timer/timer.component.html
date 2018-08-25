@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline">
+  <mat-label>startTime</mat-label>
+  <input matInput placeholder="00:00:00" [(ngModel)]="startTime" (keyup)="onStartTimeChange()">
+</mat-form-field>
+
+
+<mat-form-field appearance="outline">
+  <mat-label>endTime</mat-label>
+  <input matInput placeholder="endTime" [(ngModel)]="endTime" (keyup)="onEndTimeChange()">
+</mat-form-field>

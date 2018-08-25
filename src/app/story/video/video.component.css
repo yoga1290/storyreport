@@ -1,0 +1,52 @@
+.color-picker {
+  display: inline-block;
+  margin: 5px;
+}
+mat-slider {
+  width: 100%;
+}
+
+
+video {
+  width: 100%;
+}
+.video-container {
+  position: relative;
+}
+.video-border {
+  height: 100%;
+  position: absolute;
+  background-color: white;
+}
+
+.infile {
+  display: none;
+}
+
+.video-close {
+  right: 0px;
+  color: red;
+  z-index: 2;
+  margin-right: 10px;
+  position: absolute;
+}
+
+.btn-video-upload mat-icon {
+  font-size: 80px;
+  width: 80px;
+}
+
+
+.btn-video-upload {
+  left: -80px;
+  width: 160px;
+  height: 160px;
+  position: absolute;
+}
+
+.btn-video-upload-container {
+  position: relative;
+  left: 50%;
+  width: 50%;
+  height: 200px;
+}
