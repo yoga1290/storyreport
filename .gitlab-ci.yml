@@ -1,6 +1,6 @@
 pages:
   script:
-    - npm run build
+    - echo "Hello"
   artifacts:
     paths:
     - public
