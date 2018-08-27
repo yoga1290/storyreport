@@ -7,12 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class StoryComponent implements OnInit {
 
+  endpoint: string = 'https://storyreport.herokuapp.com/submit'
+  // endpoint: string = 'http://localhost:5000/submit' //TODO: config
   data: any = []
   Keys: any = {}
 
   queryString: {key:string, value:string}[] = []
 
-  Pages : {title, page, description}[] = [{
+  Pages : {title, page, description}[] = [{ //TODO: config
     "title": "Blank",
     "page": "http://yoga1290.gitlab.io/h5r-pages/blank/",
     "description": `Blank screen with green background, [#start - #end]`
