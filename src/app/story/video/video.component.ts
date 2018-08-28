@@ -29,7 +29,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   data: any = {
     "video": "", //OK
     "colorKey": 'green', //OK
-    "similarity": 0.7, //fixed for now
+    "similarity": 0.05, //fixed for now
     "time": {
         "start": 0,
         "end": 1<<30
