@@ -16,7 +16,7 @@ video {
 .video-border {
   height: 100%;
   position: absolute;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.59);
 }
 
 .infile {

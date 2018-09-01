@@ -6,7 +6,10 @@
 
     <mat-card-title>
       <!-- <mat-form-field> -->
-        <mat-select placeholder="Select page" [(value)]="selectedPage">
+        <mat-select
+          (change)="update()"
+          placeholder="Select page"
+          [(ngModel)]="selectedPage">
           <mat-option
             *ngFor="let p of Pages"
             [value]="p">
@@ -21,19 +24,31 @@
       </div>
 
       <mat-form-field>
-        <input matInput placeholder="Start Hash" [(value)]="startHash">
+        <input matInput placeholder="Start Hash"
+          [(ngModel)]="startHash"
+          (keyup)="update()">
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="End Hash" [(value)]="endHash">
+        <input matInput placeholder="End Hash"
+          [(ngModel)]="endHash"
+          (keyup)="update()">
       </mat-form-field>
 
 
       <div *ngFor="let q of queryString" class="query-string">
         <mat-form-field>
-          <input matInput placeholder="query key" [(ngModel)]="q.key">
+          <input
+            matInput
+            placeholder="query key"
+            [(ngModel)]="q.key"
+            (keyup)="update()">
         </mat-form-field>
         <mat-form-field>
-          <input matInput placeholder="value" [(ngModel)]="q.value">
+          <input
+            matInput
+            placeholder="value"
+            [(ngModel)]="q.value"
+            (keyup)="update()">
         </mat-form-field>
       </div>
 
@@ -65,7 +80,7 @@
         enctype="multipart/form-data"
         target="_blank"
         [action]="endpoint">
-      <input type="file" *ngFor="let d of Keys(data)" [id]="'infile-' + d" class="infile" name="file" accept="video/mp4">
+      <!-- <input type="file" *ngFor="let d of Keys(data)" [id]="'infile-' + d" class="infile" name="file" accept="video/mp4"> -->
       <input type="text" name="data" [value]="jsonData">
       <input type="submit" [id]="id_submit" value="OK">
     </form>
@@ -74,7 +89,8 @@
       <app-video
           *ngFor="let d of Keys(data)"
           [index] = "d"
-          (update)="data[d]=$event; test(data);"
+          [storyIndex]="index"
+          (update)="data[d]=$event; update();"
           (delete)="onDelete(d)"></app-video>
 
 
@@ -91,13 +107,13 @@
             </div>
           </mat-card>
 
-    <button
+    <!-- <button
       class="btn-submit"
       (click)="submit()"
       mat-raised-button
       color="primary">
       <mat-icon>cloud_upload</mat-icon>
-      Upload & process</button>
+      Upload & process</button> -->
 
   </mat-card-content>
 

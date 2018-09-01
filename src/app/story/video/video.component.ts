@@ -11,11 +11,12 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   @Output("delete") delete: EventEmitter<any> = new EventEmitter<any>()
 
   @Input("index") _index : string;
+  @Input("storyIndex") storyIndex : string;
   get index_infile() {
-    return `infile-${this._index}`;
+    return `infile-${this.storyIndex}-${this._index}`;
   }
   get index_video() {
-    return `v-${this._index}`;
+    return `v-${this.storyIndex}-${this._index}`;
   }
 
   showVideo = false
@@ -32,7 +33,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     "similarity": 0.2, //fixed for now
     "time": {
         "start": 0,
-        "end": 1<<30
+        "end": undefined
     },
     "crop": {
         "aspectRatio": 0.5625, // in panel
@@ -47,6 +48,23 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     return `${this.data.crop.offset.x * 100}%`;
   }
 
+  get videoEndBorderMargin () {
+    //TODO: get height
+    let video:any = window.document.getElementById(this.index_video) as HTMLVideoElement;
+    if (!video) {
+      return '0%';
+    }
+    return `${(this.data.crop.offset.x * video.offsetWidth + this.data.crop.aspectRatio * video.offsetHeight)}px`;
+  }
+  get videoEndBorderWidth () {
+    //TODO: get height
+    let video:any = window.document.getElementById(this.index_video) as HTMLVideoElement;
+    if (!video) {
+      return '0%';
+    }
+    let margin = this.data.crop.offset.x * video.offsetWidth + this.data.crop.aspectRatio * video.offsetHeight;
+    return `${(video.offsetWidth - margin)}px`;
+  }
   colorKeys: string[] = ['red', 'green', 'blue', 'yellow', 'orange', 'black']
 
 
@@ -61,6 +79,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       this.showVideo = infile && infile.files && infile.files[0]
       if (this.showVideo) {
         video.src = URL.createObjectURL(infile.files[0]) //TODO
+        this.update();
         video.load();
       }
     })
@@ -72,9 +91,9 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
       let t = video.currentTime
       if ( (this.data.time.start - t) > 1 || (t - this.data.time.end) > 1) {
         video.currentTime = this.data.start
-        video.play()
+        // video.play()
       }
-    }, 1000);
+    }, 500);
 
     window.document.getElementById(this.index_infile).click();
   }
@@ -89,12 +108,12 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
 
   update() {
     let video : any = window.document.getElementById(this.index_video) as HTMLElement;
-    console.log(this.data)
+    console.log('video.update', this.data)
     if (this.data && this.data.time && this.data.time.start) {
       video.currentTime = this.data.time.start;
       video.play();
     }
-    this._update.emit(this.data)
+    this._update.emit(this.data);
   }
 
   infileClick() {

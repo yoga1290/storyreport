@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-story',
@@ -6,6 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./story.component.css']
 })
 export class StoryComponent implements OnInit {
+
+  @Output("update") _update: EventEmitter<any> = new EventEmitter<any>()
 
   endpoint: string = 'https://storyreport.herokuapp.com/submit'
   // endpoint: string = 'http://localhost:5000/submit' //TODO: config
@@ -51,7 +53,8 @@ export class StoryComponent implements OnInit {
     return `form-${this._index}`;
   }
 
-  get jsonData() {
+
+  getFormatedData() {
     let overlay = this.data
     let startHash = this.startHash
     let endHash = this.endHash
@@ -59,21 +62,20 @@ export class StoryComponent implements OnInit {
     let page = this.selectedPage.page + "?"
           + this.queryString.map(it=>(it.key + '=' +it.value)).join('&');
 
-    let data = { page, overlay, startHash, endHash, size };
-    return JSON.stringify(data);
+    return { page, overlay, startHash, endHash, size };
+  }
+
+  get jsonData() {
+    return JSON.stringify(this.getFormatedData());
   }
 
   ngOnInit() {
     this.Keys = Object.keys
   }
 
-
-  test(data: any) {
-    console.log(data)
-  }
-
   onDelete(index) {
     this.data.splice(index, 1);
+    this.update();
   }
 
   submit() {
@@ -89,5 +91,10 @@ export class StoryComponent implements OnInit {
           + this.queryString.map(it=>(it.key + '=' +it.value)).join('&');
     console.log(this.queryString, this.queryString.map(it=>(it.key + '=' +it.value)),  url )
     window.open(url, '_blank')
+  }
+
+  update() {
+    this._update.emit(this.getFormatedData());
+    console.log('story.update', this.getFormatedData());
   }
 }

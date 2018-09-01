@@ -8,6 +8,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
+// import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 const exports = [
   MatButtonModule,
@@ -18,7 +19,8 @@ const exports = [
   MatMenuModule,
   MatInputModule,
   MatIconModule,
-  MatSelectModule
+  MatSelectModule,
+  // MatProgressBarModule
 ]
 const imports = exports;
 

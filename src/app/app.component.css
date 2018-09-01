@@ -1,4 +1,29 @@
 .btn-submit {
   width: 100%;
-  margin: 10px;
+  margin: 0px;
+}
+
+.btn-add-story mat-icon {
+  font-size: 80px;
+  width: 80px;
+  transform: rotate(180deg);
+}
+
+.btn-add-story {
+  left: -80px;
+  width: 160px;
+  height: 160px;
+  position: absolute;
+}
+
+.btn-add-story-container {
+  position: relative;
+  left: 50%;
+  width: 50%;
+  height: 200px;
+}
+
+.new-page {
+  position: absolute;
+  left: -30px;
 }

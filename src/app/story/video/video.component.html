@@ -3,7 +3,12 @@
 <mat-card class="example-card">
   <mat-card-header>
     <mat-card-title>
-      <button mat-icon-button class="video-close" (click)="delete.emit()"><mat-icon>close</mat-icon></button>
+      <button
+        mat-icon-button
+        class="video-close"
+        (click)="delete.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-card-title>
 
     <!-- <mat-card-subtitle>Video</mat-card-subtitle> -->
@@ -21,8 +26,8 @@
   <div [ngStyle]="{'display': showVideo ? '':'none'}">
     <div class="video-container">
       <div class="video-border" [ngStyle]="{'width': videoBorderWidth}"></div>
+      <div class="video-border" [ngStyle]="{'margin-left': videoEndBorderMargin, 'width': videoEndBorderWidth}"></div>
       <video [id]="index_video" controls></video>
-      <div class="video-border"></div>
     </div>
     <mat-card-content>
       <app-timer
@@ -30,8 +35,11 @@
       </app-timer>
 
       <div>
-        <div *ngFor="let color of colorKeys" (click)="data.colorkey = color; update();" class="color-picker">
-          <mat-icon [ngStyle]="{'color': color}">{{(color === data.colorkey) ? 'check_circle':'lens'}}</mat-icon>
+        <div
+          *ngFor="let color of colorKeys"
+          (click)="data.colorKey = color; update();"
+          class="color-picker">
+          <mat-icon [ngStyle]="{'color': color}">{{(color === data.colorKey) ? 'check_circle':'lens'}}</mat-icon>
         </div>
       </div>
 
@@ -44,6 +52,14 @@
           (change)="data.crop.offset.x = $event.value/100; update();">
       </mat-slider>
     </mat-card-content>
+
+    <input
+        type="file"
+        [id]="index_infile"
+        class="infile"
+        name="file"
+        accept="video/mp4">
+
 
   </div>
 

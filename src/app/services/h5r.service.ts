@@ -7,21 +7,31 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+// @Injectable()
 export class H5RService {
-
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  };
 
   constructor(private http: HttpClient) { }
 
 
-  loginAndProcessData (data : any) : Observable<Object> {
-    return this.http.post<any>("/test", data, this.httpOptions).pipe( //login
+  submit (files: any, data : any) : any { //Observable<any> {
+    let httpOptions = {
+      // headers: new HttpHeaders({
+      //   // 'Content-Type':  'multipart/form-data'
+      //   // 'Content-Type':  'application/json'
+      // }),
+      reportProgress: true
+    };
+
+    let formData = new FormData();
+    formData.append('data', JSON.stringify(data));
+    files.forEach((file) => {
+      console.log('file', file)
+      formData.append('file', file);
+    });
+    console.log('formData', formData);
+    return this.http.post<any>("https://storyreport.herokuapp.com/submit", formData, httpOptions);//.pipe( //login
       // tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
       // catchError(this.handleError<Hero>('addHero'))
-    );
+    //);
   }
 }

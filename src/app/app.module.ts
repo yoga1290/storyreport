@@ -7,15 +7,15 @@ import { FormsModule } from '@angular/forms';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MyOwnCustomMaterialModule } from './material.module';
-import { PanelComponent } from './panel/panel.component';
 import { TimerComponent } from './story/video/timer/timer.component';
 import { VideoComponent } from './story/video/video.component';
-import { StoryComponent } from './story/story.component'
+import { StoryComponent } from './story/story.component';
+import { H5RService } from './services/h5r.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PanelComponent,
     TimerComponent,
     VideoComponent,
     StoryComponent
@@ -24,9 +24,10 @@ import { StoryComponent } from './story/story.component'
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
-    MyOwnCustomMaterialModule
+    MyOwnCustomMaterialModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [H5RService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
