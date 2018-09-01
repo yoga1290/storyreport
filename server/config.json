@@ -1,0 +1,6 @@
+{
+  "redirectUri": "http://localhost:5000/_oauth",
+  "origins": "http://localhost:4200",
+  "clientId": "TODO",
+  "clientSecret": "TODO"
+}
