@@ -37,9 +37,9 @@
       <div>
         <div
           *ngFor="let color of colorKeys"
-          (click)="data.colorKey = color; update();"
+          (click)="data.colorkey = color; update();"
           class="color-picker">
-          <mat-icon [ngStyle]="{'color': color}">{{(color === data.colorKey) ? 'check_circle':'lens'}}</mat-icon>
+          <mat-icon [ngStyle]="{'color': color}">{{(color === data.colorkey) ? 'check_circle':'lens'}}</mat-icon>
         </div>
       </div>
 

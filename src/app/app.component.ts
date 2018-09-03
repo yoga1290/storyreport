@@ -49,7 +49,9 @@ export class AppComponent {
       //   console.log('resp2', event)
       //
       // }
-        window.location.href = event.url;
+        if (event.url) {
+          window.location.href = event.url;
+        }
 
       })
     }
