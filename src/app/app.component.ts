@@ -38,7 +38,8 @@ export class AppComponent {
       this.stepCount = 1
 
       // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-      let win = window.open("http://localhost:5000/drive/login", "driveRequest")//"_blank");
+      //TODO
+      let win = window.open("https://storyreport.herokuapp.com/drive/login", "driveRequest")//"_blank");
       win.focus();
 
       let timer:any = () => {};
