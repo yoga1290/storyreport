@@ -52,7 +52,9 @@ function postFilesToDrive (accessToken, req, callback) {
     });
     busboy.on('finish', function () {
         console.log('busboy:finish')
-        // callback(webViewLinks)
+        if (fileStreamsRecievedCount <= driveResponseCount) {
+          callback([], reqBody)
+        }
     });
     return req.pipe(busboy);
 }
