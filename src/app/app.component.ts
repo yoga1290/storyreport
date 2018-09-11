@@ -62,7 +62,7 @@ export class AppComponent {
           timer();
         }
 
-      }, 1000)
+      }, 500)
     }
 
 
