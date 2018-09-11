@@ -1,72 +1,101 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    StoryReport!
-  </h1>
-  <!-- <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="> -->
-  <iframe
-    width="560"
-    height="315"
-    src="https://www.youtube.com/embed/7skCmSj3-o8"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-  </iframe>
+
+<mat-card *ngIf="closeMePage">
+  <div
+    class="btn-add-story-container">
+    <button
+      mat-icon-button
+      (click)="window.close()"
+      class="btn-add-story sync">
+      <mat-icon>close_circle</mat-icon></button>
+      <div class="new-page">
+        Close me
+      </div>
+  </div>
+</mat-card>
+
+
+<div *ngIf="!closeMePage">
+
+  <div style="text-align:center">
+    <h1>
+      StoryReport!
+    </h1>
+    <!-- <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="> -->
+    <div class="tutorial">
+      <iframe
+        src="https://www.youtube.com/embed/7skCmSj3-o8"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+
+  <!-- <app-home></app-home> -->
+
+
+  <app-story
+      *ngFor="let d of Keys(data)"
+      [index]="d"
+      (update)="data[d] = $event; test()">
+  </app-story>
+
+
+  <mat-card>
+    <div
+      class="btn-add-story-container">
+      <button
+        mat-icon-button
+        class="btn-add-story"
+        (click)="addStory()">
+        <mat-icon>file_copy</mat-icon></button>
+        <div class="new-page">
+          New Page
+        </div>
+    </div>
+
+  </mat-card>
+
+
+  <mat-card>
+
+    <mat-list role="list" *ngIf="stepCount > 0">
+      <mat-list-item role="listitem">
+        <mat-icon *ngIf="stepCount > 0" class="green">{{ (stepCount > 1) ? 'check_circle':'sync'}}</mat-icon>
+          Request for Drive access
+      </mat-list-item>
+      <mat-list-item role="listitem">
+        <mat-icon *ngIf="stepCount > 1" class="green">{{ (stepCount > 2) ? 'check_circle':'sync'}}</mat-icon>
+          Uploading files to Drive
+      </mat-list-item>
+      <mat-list-item role="listitem">
+        <mat-icon *ngIf="stepCount > 1" class="green">{{ (stepCount > 2) ? 'check_circle':'sync'}}</mat-icon>
+          Queue {{'{'}} Drive's RefreshToken, H5Configuration {{'}'}}
+      </mat-list-item>
+    </mat-list>
+
+    <button
+      class="btn-submit"
+      (click)="loginToDrive()"
+      mat-raised-button
+      color="primary">
+      <mat-icon>cloud_upload</mat-icon>
+      Upload & process</button>
+
+    <!-- <div
+      class="btn-add-story-container">
+      <button
+        mat-icon-button
+        class="btn-add-story sync">
+        <mat-icon>sync</mat-icon></button>
+        <div class="new-page">
+          Uploading
+        </div>
+    </div> -->
+  </mat-card>
+
 </div>
 
-
-<!-- <app-home></app-home> -->
-
-
-<app-story
-    *ngFor="let d of Keys(data)"
-    [index]="d"
-    (update)="data[d] = $event; test()">
-</app-story>
-
-
-<mat-card>
-  <!-- <mat-card-header>
-    <mat-card-title>New Story</mat-card-title>
-  </mat-card-header> -->
-  <div
-    class="btn-add-story-container">
-    <button
-      mat-icon-button
-      class="btn-add-story"
-      (click)="addStory()">
-      <mat-icon>file_copy</mat-icon></button>
-      <div class="new-page">
-        New Page
-      </div>
-
-  </div>
-
-</mat-card>
-
-
-<mat-card *ngIf="uploading">
-  <div
-    class="btn-add-story-container">
-    <button
-      mat-icon-button
-      class="btn-add-story">
-      <mat-icon>sync</mat-icon></button>
-      <div class="new-page">
-        Uploading
-      </div>
-  </div>
-</mat-card>
-
-<button
-  *ngIf="!uploading && data.length"
-  class="btn-submit"
-  (click)="submit()"
-  mat-raised-button
-  color="primary">
-  <mat-icon>cloud_upload</mat-icon>
-  Upload & process</button>
-
-<!-- <mat-progess-bar
-  value="40">
-</mat-progess-bar> -->
+<!-- *ngIf="stepCount < 1" -->

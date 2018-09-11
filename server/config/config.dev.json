@@ -1,6 +1,7 @@
 {
   "redirectUri": "http://localhost:5000/_oauth",
   "origins": "http://localhost:4200",
+  "exitTokenPage": "http://localhost:4200/#closeme",
   "clientId": "TODO",
   "clientSecret": "TODO"
 }

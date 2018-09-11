@@ -1,0 +1,8 @@
+
+{
+  "redirectUri": "https://storyreport.herokuapp.com/_oauth",
+  "origins": "https://yoga1290.gitlab.io",
+  "exitTokenPage": "https://yoga1290.gitlab.io/#closeme",
+  "clientId": "TODO",
+  "clientSecret": "TODO"
+}

@@ -17,16 +17,71 @@ export class AppComponent {
   // Keys = Object.keys
   title = 'storyreport';
 
+  get closeMePage() {
+    return window.location.href.match(/#closeme/) !== null
+  }
+
   Keys:any = Object.keys
 
     data: any = []
-    uploading: boolean = false;
+    stepCount: number = 0;
 
     addStory() {
       this.data.push({});
     }
     test() {
       console.log(this.data)
+    }
+
+
+    loginToDrive() {
+      this.stepCount = 1
+
+      // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+      let win = window.open("http://localhost:5000/drive/login", "driveRequest")//"_blank");
+      win.focus();
+
+      let timer:any = () => {};
+      timer = setInterval(()=>{
+        console.log(win.closed);
+
+        if (win.location && win.location.href) {
+          console.log(win.location.href)
+
+          let mAccessToken = win.location.href.match(/access_token=([^=, ^&]*)/)
+          let mRefreshToken = win.location.href.match(/refresh_token=([^=, ^&]*)/)
+
+          if (mAccessToken && mAccessToken.length > 1 && mRefreshToken && mRefreshToken.length > 1) {
+            window.clearInterval(timer);
+            this.uploadFilesToDrive(mAccessToken[1], mRefreshToken[1]);
+          }
+        }
+
+        // cancel timer if child is closed as well:
+        if (win.closed) {
+          timer();
+        }
+
+      }, 1000)
+    }
+
+
+    uploadFilesToDrive(accessToken: string, refreshToken: string) {
+      console.log('uploadFilesToDrive')
+      this.stepCount = 2
+      let elm : any = window.document.querySelectorAll('input[type=file]') as NodeListOf<Element>;
+      let videos :any[] = [];
+      for (let video of elm) {
+        let v :any = video as HTMLElement
+        if (v.files && v.files.length > 0) {
+          videos.push(v.files[0])
+        }
+      }
+
+      this.h5RService.upload(accessToken, refreshToken, videos, this.data).subscribe((resp) => {
+        this.stepCount = 3
+        console.log('uploadFilesToDrive', resp)
+      })
     }
   submit() {
       let elm : any = window.document.querySelectorAll('input[type=file]') as NodeListOf<Element>;
@@ -38,17 +93,18 @@ export class AppComponent {
         }
       }
       console.log("videos", videos, this.data);
-      this.uploading = true;
-      this.h5RService.submit(videos, this.data).subscribe((event) => {
-      // if (event.type === HttpEventType.UploadProgress) {
-      //   // This is an upload progress event. Compute and show the % done:
-      //   const percentDone = Math.round(100 * event.loaded / event.total);
-      //   console.log(`File is ${percentDone}% uploaded.`);
-      // } else if (event instanceof HttpResponse) {
-      //   win.location.href = event.url;
-      //   console.log('resp2', event)
-      //
+
+      // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onclose
+      // win.onload = (e) => {
+      //   console.log('LOCATION: ', win.location, e);
       // }
+
+      // win.document.write("STORYREPORT: DO NOT CLOSE TILL UPLOAD IS DONE");
+      this.h5RService.submit(videos, this.data).subscribe((event) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          console.log(Math.round(100 * event.loaded / event.total))
+        }
+
         if (event.url) {
           window.location.href = event.url;
         }
