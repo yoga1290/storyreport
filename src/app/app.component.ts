@@ -44,9 +44,8 @@ export class AppComponent {
 
       let timer:any = () => {};
       timer = setInterval(()=>{
-        console.log(win.closed);
 
-        if (win.location && win.location.href) {
+        if (!win.closed && win.location && win.location.href) {
           console.log(win.location.href)
 
           let mAccessToken = win.location.href.match(/access_token=([^=, ^&]*)/)
