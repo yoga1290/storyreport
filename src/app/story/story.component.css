@@ -44,3 +44,7 @@ mat-form-field {
 .mat-card-header-text {
     width: 100%;
 }
+
+mat-card-header div {
+    width: 100%;
+}
