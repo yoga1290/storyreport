@@ -40,3 +40,8 @@ mat-form-field {
 .page-preview {
   float: right;
 }
+
+.mat-card-header-text {
+    width: 100%;
+}
+}
