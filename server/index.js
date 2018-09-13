@@ -1,13 +1,17 @@
 const express = require('express');
-// const http = require('http'); //TODO
-const path = require('path');
-const fs = require('fs');
+const h5recorder = require('h5recorder')
 // https://expressjs.com/en/resources/middleware/multer.html
 var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 
-const { gSvc, StorageSvc, QueueSvc } = require('./services')
-const h5recorder = require('h5recorder')
+const { gSvc, QueueSvc } = require('./services')
+const {
+  getLoginURL,
+  postFilesToDrive,
+  oauthCodeExchange,
+  mapDriveFilesToEntries
+} = gSvc
+
 const { origins, exitTokenPage } = require('./config')
 
 const PROD = (process.env.NODE_ENV === 'production')
@@ -24,26 +28,8 @@ console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 
 app.set('port', (process.env.PORT || 5000));
 
-function mapDriveFilesToEntries(entries, files) {
-  let i = 0;
-  // https://developers.google.com/drive/api/v3/manage-downloads
-  files = files.map(f=>`https://www.googleapis.com/drive/v3/files/${f}?alt=media`)
-  if (files && files.length > 0) {
-    entries = entries.map((entry) => {
-      if (entry.overlay && entry.overlay.length > 0) {
-        entry.overlay = entry.overlay.map((it) => {
-          it.video = (i < files.length && files[i]) ? files[i++]:'';
-          return it;
-        });
-      }
-      return entry;
-    });
-  }
-  return entries;
-}
-
 app.get('/drive/login', (req, res, next) => {
-  let url = gSvc.getLoginURL('NIY')
+  let url = getLoginURL('NIY')
   res.redirect(url)
 })
 
@@ -52,7 +38,7 @@ app.post('/drive/upload', (req, res, next) => {
   let accessToken = req.query.access_token
   let refreshToken = req.query.refresh_token
 
-  gSvc.postFilesToDrive(accessToken, req, (driveFileIds, reqBody) => {
+  postFilesToDrive(accessToken, req, (driveFileIds, reqBody) => {
     console.log('END OF REQUEST', reqBody);
     let h5RConfig = JSON.parse(reqBody.data)
     h5RConfig = mapDriveFilesToEntries(h5RConfig, driveFileIds)
@@ -69,55 +55,18 @@ app.get('/_oauth', (req, res) => {
     let state = req.query.state
 
     console.log(code, state);
-    gSvc.oauthCodeExchange(code, (body) => {
+    oauthCodeExchange(code, (body) => {
       console.log('body.access_token', body.access_token)
       let accessToken = body.access_token
       let refreshToken = body.refresh_token
       console.log('refreshToken', refreshToken)
-      //TODO: store token on the server?
+      //TODO: store token on the server, no?
+      console.log('exitTokenPage', exitTokenPage)
       res.send(`<script>
-        window.location.href="${exitTokenPage}/?access_token=${accessToken}&refresh_token=${refreshToken}";
+        window.location.href="${exitTokenPage}?access_token=${accessToken}&refresh_token=${refreshToken}";
         setTimeout(function(){ window.close(); }, 2000);
       </script>`)
-
     })
-});
-
-function mapFilesPathToEntries(entries, files) {
-  let i = 0;
-  if (files && files.length > 0) {
-    entries = entries.map((entry) => {
-      if (entry.overlay && entry.overlay.length > 0) {
-        entry.overlay = entry.overlay.map((it) => {
-          it.video = (i < files.length && files[i]) ? files[i++].path:'';
-          return it;
-        });
-      }
-      return entry;
-    });
-  }
-  return entries;
-}
-app.post('/submit', (req, res, next) => { //TODO: login
-  // res.header("Access-Control-Allow-Origin", origins);
-  console.log(req.body)
-  //TODO validation
-  // let state = StorageSvc.save(req.body)
-  // gSvc.login(req, res, state)
-  next();
-},
-  upload.array('file'),
-  express.urlencoded(),
-  (req, res, next) => {
-    console.log(req.files, req.body)
-
-    let data = JSON.parse(req.body.data)
-    data = mapFilesPathToEntries(data, req.files);
-    console.log('data', JSON.stringify(data, true))
-    let state = StorageSvc.save(data);
-    let url = gSvc.getLoginURL(state)
-    res.send({ url })
-
 });
 
 app.listen(app.get('port'), function() {
