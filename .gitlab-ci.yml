@@ -9,12 +9,12 @@ pages:
   only:
   - master
 
-plantuml:
-  image: openjdk:8
-  script:
-    - sh -x ci/plantuml.sh
-  artifacts:
-    paths:
-    - public
-  only:
-  - master
+# plantuml:
+#   image: openjdk:8
+#   script:
+#     - sh -x ci/plantuml.sh
+#   artifacts:
+#     paths:
+#     - public
+#   only:
+#   - master
