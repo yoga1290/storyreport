@@ -1,23 +1,5 @@
 @startuml
 
-!definelong SALT(x)
-"{{
-salt
-_##x
-}}
-" as x
-!enddefinelong
-
-!definelong _login
-{+
-<b>Login
-"Username"
-"Password"
-[Cancel] | [ok]
-}
-!enddefinelong
-
-
 | frontend |
 start
 : Set webpage & queryString ;
