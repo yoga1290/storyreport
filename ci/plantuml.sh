@@ -14,7 +14,7 @@ unzip plantuml-jlatexmath.zip
 
 java \
   -cp jlatexmath-minimal-1.0.3.jar -jar \
-  plantuml.1.2018.1.jar \
+  plantuml.1.2018.10.jar \
   -tpng \
   -o public \
   doc/flow.puml
