@@ -1,0 +1,74 @@
+@startuml
+
+!definelong SALT(x)
+"{{
+salt
+_##x
+}}
+" as x
+!enddefinelong
+
+!definelong _login
+{+
+<b>Login
+"Username"
+"Password"
+[Cancel] | [ok]
+}
+!enddefinelong
+
+
+| frontend |
+start
+: Set webpage & queryString ;
+: Set Overlay video(s) ;
+-> Redirect to Drive;
+
+| Google Drive |
+: OAuth2 dialog ;
+-> AccessToken & RefreshToken ;
+
+| frontend |
+: POST resource files, H5Configuration, AccessToken & RefreshToken ;
+-> files, H5Configuration & tokens ;
+
+| backend |
+: Stream resources to Drive ;
+-> resources;
+
+| Google Drive |
+: Wait for resource upload ;
+
+| backend |
+: Link H5Configuration with Drive files ;
+
+split
+
+| frontend |
+-> Notify User ;
+stop
+
+| backend |
+split again
+-[#gray,dotted]-> RefreshToken & H5Configuration;
+: Queue {RefreshToken, H5Configuration};
+
+partition QueueSvc {
+  while (Queue !isEmpty?)
+  | Google Drive |
+  : Exchange RefreshToken to AccessToken (Google Drive);
+  -> AccessToken;
+  | backend |
+  : Download resources from Google Drive ;
+  : Link H5Configuration with the downloaded files ;
+  : Pass H5Configuration to the H5Recorder module & wait for callback ;
+  | Google Drive |
+  : Upload the output video;
+  endwhile
+  | backend |
+  -> Empty queue ;
+  stop
+}
+
+
+@enduml
