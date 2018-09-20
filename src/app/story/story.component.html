@@ -89,7 +89,7 @@
       <app-video
           *ngFor="let d of Keys(data)"
           [index] = "d"
-          [storyIndex]="index"
+          [storyIndex]="_index"
           (update)="data[d]=$event; update();"
           (delete)="onDelete(d)"></app-video>
 
