@@ -1,0 +1,13 @@
+<mat-card
+  class="example-card">
+
+  <audio controls>
+    <source src="horse.ogg" type="audio/ogg">
+  Your browser does not support the audio element.
+  </audio>
+
+  <app-timer
+    (update)="time = $event; update();">
+  </app-timer>
+
+</mat-card>
