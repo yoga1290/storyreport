@@ -39,7 +39,8 @@ export class AppComponent {
 
       // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
       //TODO
-      let win = window.open("https://storyreport.herokuapp.com/drive/login", "driveRequest")//"_blank");
+      // let win = window.open("https://storyreport.herokuapp.com/drive/login", "driveRequest")//"_blank");
+      let win = window.open("http://localhost:5000/drive/login", "driveRequest")//"_blank");
       win.focus();
 
       let timer:any = () => {};
@@ -78,7 +79,16 @@ export class AppComponent {
         }
       }
 
-      this.h5RService.upload(accessToken, refreshToken, videos, this.data).subscribe((resp) => {
+      let elmAudio : any = window.document.querySelectorAll('input[type=file][name=audio]') as NodeListOf<Element>;
+      let audios :any[] = [];
+      for (let audio of elmAudio) {
+        let a :any = audio as HTMLElement
+        if (a.files && a.files.length > 0) {
+          audios.push(a.files[0])
+        }
+      }
+
+      this.h5RService.upload(accessToken, refreshToken, videos, audios, this.data).subscribe((resp) => {
         this.stepCount = 3
         console.log('uploadFilesToDrive', resp)
       })
@@ -92,7 +102,16 @@ export class AppComponent {
           videos.push(v.files[0])
         }
       }
-      console.log("videos", videos, this.data);
+
+      let elmAudio : any = window.document.querySelectorAll('input[type=file,name=audio]') as NodeListOf<Element>;
+      let audios :any[] = [];
+      for (let audio of elmAudio) {
+        let a :any = audio as HTMLElement
+        if (a.files && a.files.length > 0) {
+          audios.push(a.files[0])
+        }
+      }
+      console.log("audios", audios, this.data);
 
       // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onclose
       // win.onload = (e) => {
@@ -100,7 +119,7 @@ export class AppComponent {
       // }
 
       // win.document.write("STORYREPORT: DO NOT CLOSE TILL UPLOAD IS DONE");
-      this.h5RService.submit(videos, this.data).subscribe((event) => {
+      this.h5RService.submit(videos, audios, this.data).subscribe((event) => {
         if (event.type === HttpEventType.UploadProgress) {
           console.log(Math.round(100 * event.loaded / event.total))
         }

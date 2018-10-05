@@ -1,13 +1,42 @@
 <mat-card
   class="example-card">
+  <mat-card-header>
+    <mat-card-title>
+      <button
+        mat-icon-button
+        class="btn-close"
+        (click)="delete.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-title>
+  </mat-card-header>
 
-  <audio controls>
-    <source src="horse.ogg" type="audio/ogg">
-  Your browser does not support the audio element.
-  </audio>
+  <div class="btn-video-upload-container" *ngIf="!showAudio">
+    <button
+      mat-icon-button
+      class="btn-video-upload"
+      (click)="changeFile()">
+      <mat-icon>library_music</mat-icon></button>
+  </div>
 
-  <app-timer
-    (update)="time = $event; update();">
-  </app-timer>
+
+
+  <div [ngStyle]="{'display': showAudio ? '':'none'}">
+    <audio controls [id]="index_audio">
+      <source src="horse.ogg" type="audio/ogg">
+    Your browser does not support the audio element.
+    </audio>
+    <app-timer
+      (update)="time = $event; update();">
+    </app-timer>
+  </div>
 
 </mat-card>
+
+
+<input
+  type="file"
+  name="audio"
+  class="hidden"
+  [id]="index_infile"
+  accept="audio/*">

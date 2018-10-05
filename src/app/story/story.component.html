@@ -127,13 +127,19 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-      <app-audio></app-audio>
+      <app-audio
+        *ngFor="let a of Keys(audio)"
+        [index] = "a"
+        [storyIndex]="_index"
+        (update)="audio[d]=$event; update();"
+        (delete)="onAudioDelete(a)"></app-audio>
       <mat-card
         class="example-card">
         <div class="btn-video-upload-container">
           <button
             mat-icon-button
-            class="btn-video-upload">
+            class="btn-video-upload"
+            (click)="addAudio()">
             <mat-icon>library_music</mat-icon></button>
         </div>
       </mat-card>
