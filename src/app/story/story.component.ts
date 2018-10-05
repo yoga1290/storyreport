@@ -12,6 +12,7 @@ export class StoryComponent implements OnInit {
   endpoint: string = 'https://storyreport.herokuapp.com/submit'
   // endpoint: string = 'http://localhost:5000/submit' //TODO: config
   data: any = []
+  audio: any = []
   Keys: any = {}
 
   queryString: {key:string, value:string}[] = []
@@ -61,8 +62,9 @@ export class StoryComponent implements OnInit {
     let size = this.size
     let page = this.selectedPage.page + "?"
           + this.queryString.map(it=>(it.key + '=' +it.value)).join('&');
+    let audio = this.audio
 
-    return { page, overlay, startHash, endHash, size };
+    return { page, overlay, startHash, endHash, size, audio };
   }
 
   get jsonData() {
@@ -78,12 +80,21 @@ export class StoryComponent implements OnInit {
     this.update();
   }
 
+  onAudioDelete(index) {
+    this.audio.splice(index, 1);
+    // this.update();
+  }
+
   submit() {
     window.document.forms[this.id_form].submit()
   }
 
   addVideo() {
     this.data.push({})
+  }
+
+  addAudio() {
+    this.audio.push({})
   }
 
   pagePreview() {

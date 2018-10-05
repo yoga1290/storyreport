@@ -6,7 +6,7 @@ const request = require('request')
 const fs = require('fs')
 const Busboy = require('busboy');
 
-const {redirectUri, clientId, clientSecret} = require('../config')
+const {redirectUri, clientId, clientSecret, PREFIX_RESOURCE, PREFIX_OUTPUT} = require('../config')
 
 // let redirectUri = config.redirectUri
 // let clientId = config.clientId
@@ -18,7 +18,8 @@ let scope = 'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.file'
 // https://stackoverflow.com/a/36903648/1683797
 function postFilesToDrive (accessToken, req, callback) {
     var busboy = new Busboy({headers: req.headers});
-    let webContentLinks = []
+    let videoWebContentLinks = []
+    let audioWebContentLinks = []
     let fileStreamsRecievedCount = 0
     let driveResponseCount = 0
     let reqBody = {}
@@ -37,18 +38,22 @@ function postFilesToDrive (accessToken, req, callback) {
             console.log('File [' + fieldname + '] Finished');
         });
         uploadFileStreamToDrive(accessToken, fileStream, (err, webContentLink) => {
+          if (fieldname === 'audio') {
+            audioWebContentLinks.push(webContentLink)
+          } else {
+            videoWebContentLinks.push(webContentLink) //TODO
+          }
           driveResponseCount++;
-          webContentLinks.push(webContentLink) //TODO
-          console.log('busboy:file counts:', webContentLinks, fileStreamsRecievedCount, driveResponseCount)
-
+          console.log('busboy:file counts:', audioWebContentLinks, videoWebContentLinks, fileStreamsRecievedCount, driveResponseCount)
           if (fileStreamsRecievedCount <= driveResponseCount) {
-            callback(webContentLinks, reqBody)
+            callback(videoWebContentLinks, audioWebContentLinks, reqBody)
           }
         })
         // var saveTo = path.join(__dirname, 'dir', path.basename(filename));
         // var outStream = fs.createWriteStream(saveTo);
         // fileStream.pipe(outStream);
     });
+
     busboy.on('finish', function () {
         console.log('busboy:finish')
         if (fileStreamsRecievedCount <= driveResponseCount) {
@@ -77,7 +82,7 @@ function uploadFileStreamToDrive(accessToken, fileStream, callback) {
       {
         'content-type': 'application/json',
         body: JSON.stringify({
-          name: `storyreport-${new Date().getTime()}.mp4`,
+          name: `${PREFIX_RESOURCE}${new Date().getTime()}.mp4`,
           description: 'yoga1290.gitlab.io/stroyreport',
           writersCanShare: true,
           viewersCanCopyContent: true, //https://developers.google.com/drive/api/v3/manage-downloads
@@ -272,7 +277,7 @@ function uploadFile(accessToken, path, callback) {
       {
         'content-type': 'application/json',
         body: JSON.stringify({
-          name: `storyreport-${new Date().getTime()}.mp4`,
+          name: `${PREFIX_OUTPUT}${new Date().getTime()}.mp4`,
           description: 'yoga1290.gitlab.io/stroyreport',
           writersCanShare: true
         })
@@ -303,6 +308,24 @@ function mapDriveFilesToEntries(entries, files) {
   return entries;
 }
 
+function mapDriveFilesToAudioEntries(entries, files) {
+  let i = 0;
+  // https://developers.google.com/drive/api/v3/manage-downloads
+  files = files.map(f=>`https://www.googleapis.com/drive/v3/files/${f}?alt=media`)
+  if (files && files.length > 0) {
+    entries = entries.map((entry) => {
+      if (entry.audio && entry.audio.length > 0) {
+        entry.audio = entry.audio.map((it) => {
+          it.path = (i < files.length && files[i]) ? files[i++]:'';
+          return it;
+        });
+      }
+      return entry;
+    });
+  }
+  return entries;
+}
+
 module.exports = {
 
   // "https://www.googleapis.com/auth/drive.file"
@@ -320,6 +343,7 @@ module.exports = {
   downloadDriveFilesFromConfig,
   uploadFile,
   mapDriveFilesToEntries,
+  mapDriveFilesToAudioEntries,
 
   getLoginURL (state) {
     // console.log(JSON.stringify(req.body))

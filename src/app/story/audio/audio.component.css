@@ -1,0 +1,25 @@
+.hidden {
+  display: none;
+}
+
+.btn-video-upload {
+  left: -80px;
+  width: 160px;
+  height: 160px;
+  position: absolute;
+}
+
+.btn-video-upload-container {
+  position: relative;
+  left: 50%;
+  width: 50%;
+  height: 200px;
+}
+
+.btn-close {
+  right: 0px;
+  color: red;
+  z-index: 2;
+  margin-right: 10px;
+  position: absolute;
+}

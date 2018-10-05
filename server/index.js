@@ -9,7 +9,8 @@ const {
   getLoginURL,
   postFilesToDrive,
   oauthCodeExchange,
-  mapDriveFilesToEntries
+  mapDriveFilesToEntries,
+  mapDriveFilesToAudioEntries
 } = gSvc
 
 const { origins, exitTokenPage } = require('./config')
@@ -38,11 +39,13 @@ app.post('/drive/upload', (req, res, next) => {
   let accessToken = req.query.access_token
   let refreshToken = req.query.refresh_token
 
-  postFilesToDrive(accessToken, req, (driveFileIds, reqBody) => {
-    console.log('END OF REQUEST', reqBody);
+  postFilesToDrive(accessToken, req, (driveFileIds, audioDriveFileIds, reqBody) => {
+    console.log('END OF REQUEST', driveFileIds, audioDriveFileIds, reqBody);
     let h5RConfig = JSON.parse(reqBody.data)
     h5RConfig = mapDriveFilesToEntries(h5RConfig, driveFileIds)
-    res.send({ done: 'ok'})
+    h5RConfig = mapDriveFilesToAudioEntries(h5RConfig, audioDriveFileIds)
+
+    res.send({ done: 'ok', h5RConfig })
 
     QueueSvc.queue(refreshToken, h5RConfig);
   })

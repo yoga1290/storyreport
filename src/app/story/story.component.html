@@ -85,27 +85,73 @@
       <input type="submit" [id]="id_submit" value="OK">
     </form>
 
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>movie_creation</mat-icon> Overlay Videos
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
 
-      <app-video
-          *ngFor="let d of Keys(data)"
-          [index] = "d"
-          [storyIndex]="_index"
-          (update)="data[d]=$event; update();"
-          (delete)="onDelete(d)"></app-video>
+    <app-video
+        *ngFor="let d of Keys(data)"
+        [index] = "d"
+        [storyIndex]="_index"
+        (update)="data[d]=$event; update();"
+        (delete)="onDelete(d)"></app-video>
+
+
+      <mat-card
+        class="example-card">
+        <div class="btn-video-upload-container">
+          <button
+            mat-icon-button
+            class="btn-video-upload"
+            (click)="data.push({})">
+            <mat-icon>movie_filter</mat-icon></button>
+        </div>
+      </mat-card>
+
+  </mat-expansion-panel>
+
+
+
+  <!-- <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>queue_music</mat-icon> Audio
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+      <app-audio
+        *ngFor="let a of Keys(audio)"
+        [index] = "a"
+        [storyIndex]="_index"
+        (update)="audio[d]=$event; update();"
+        (delete)="onAudioDelete(a)"></app-audio>
+      <mat-card
+        class="example-card">
+        <div class="btn-video-upload-container">
+          <button
+            mat-icon-button
+            class="btn-video-upload"
+            (click)="addAudio()">
+            <mat-icon>library_music</mat-icon></button>
+        </div>
+      </mat-card>
+
+  </mat-expansion-panel> -->
+
+</mat-accordion>
 
 
 
 
-          <mat-card
-            class="example-card">
-            <div class="btn-video-upload-container">
-              <button
-                mat-icon-button
-                class="btn-video-upload"
-                (click)="data.push({})">
-                <mat-icon>movie_filter</mat-icon></button>
-            </div>
-          </mat-card>
+
 
     <!-- <button
       class="btn-submit"

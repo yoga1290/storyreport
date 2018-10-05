@@ -12,13 +12,15 @@ import { VideoComponent } from './story/video/video.component';
 import { StoryComponent } from './story/story.component';
 import { H5RService } from './services/h5r.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AudioComponent } from './story/audio/audio.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimerComponent,
     VideoComponent,
-    StoryComponent
+    StoryComponent,
+    AudioComponent
   ],
   imports: [
     BrowserModule,
