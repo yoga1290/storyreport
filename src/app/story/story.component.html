@@ -118,7 +118,7 @@
 
 
 
-  <!-- <mat-expansion-panel>
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <mat-icon>queue_music</mat-icon> Audio
@@ -131,7 +131,7 @@
         *ngFor="let a of Keys(audio)"
         [index] = "a"
         [storyIndex]="_index"
-        (update)="audio[d]=$event; update();"
+        (update)="audio[a]=$event; update();"
         (delete)="onAudioDelete(a)"></app-audio>
       <mat-card
         class="example-card">
@@ -144,7 +144,7 @@
         </div>
       </mat-card>
 
-  </mat-expansion-panel> -->
+  </mat-expansion-panel>
 
 </mat-accordion>
 

@@ -65,6 +65,7 @@ app.get('/_oauth', (req, res) => {
       console.log('refreshToken', refreshToken)
       //TODO: store token on the server, no?
       console.log('exitTokenPage', exitTokenPage)
+      //TODO redirect
       res.send(`<script>
         window.location.href="${exitTokenPage}?access_token=${accessToken}&refresh_token=${refreshToken}";
         setTimeout(function(){ window.close(); }, 2000);
