@@ -223,6 +223,15 @@ ${text}
 
 function downloadDriveFilesFromConfig(h5RConfig, accessToken, callback) {
 
+  downloadDriveFilesFromConfig(h5RConfig, accessToken, (h5RConfigWithVideoResources, videoOutputs) => {
+    downloadDriveAudioFilesFromConfig(h5RConfigWithVideoResources, accessToken, (h5RConfigWithAudioAndVideoResources, audioOutputs) => {
+      callback(h5RConfigWithAudioAndVideoResources, videoOutputs, audioOutputs)
+    })
+  })
+}
+
+function downloadDriveFilesFromConfig(h5RConfig, accessToken, callback) {
+
   let outputs = []
   let outputCount = 0
   let loopAsync = (i, j) => {
@@ -244,6 +253,43 @@ function downloadDriveFilesFromConfig(h5RConfig, accessToken, callback) {
             h5RConfig[i].overlay[j].video = `drive-${i}-${j}.mp4`;
             outputs[outputCount++] = `drive-${i}-${j}.mp4`
             console.log('video', url, `drive-${i}-${j}.mp4`)
+
+            loopAsync(i, j + 1)
+          })
+          .pipe(fs.createWriteStream(`drive-${i}-${j}.mp4`))
+    } else if (i < h5RConfig.length) {
+      loopAsync(i + 1, 0)
+    } else {
+      callback(h5RConfig, outputs)
+    }
+  }
+
+  loopAsync(0, 0)
+}
+
+function downloadDriveAudioFilesFromConfig(h5RConfig, accessToken, callback) {
+
+  let outputs = []
+  let outputCount = 0
+  let loopAsync = (i, j) => {
+
+    let headers = {
+      "authorization": `Bearer ${accessToken}`
+    }
+
+    if (i < h5RConfig.length &&
+        h5RConfig[i].audio &&
+        j < h5RConfig[i].audio.length &&
+        h5RConfig[i].audio[j].path) {
+
+          let url = h5RConfig[i].audio[j].path
+          console.log('downloadDriveAudioFilesFromConfig downloading: ', url)
+          request({ headers, url })
+          .on('response', function(response) {
+
+            h5RConfig[i].audio[j].path = `drive-audio-${i}-${j}.mp3`;
+            outputs[outputCount++] = `drive-audio-${i}-${j}.mp3`
+            console.log('downloadDriveAudioFilesFromConfig', url, `drive-audio-${i}-${j}.mp3`)
 
             loopAsync(i, j + 1)
           })
