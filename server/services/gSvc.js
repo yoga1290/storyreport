@@ -223,14 +223,17 @@ ${text}
 
 function downloadDriveFilesFromConfig(h5RConfig, accessToken, callback) {
 
-  downloadDriveFilesFromConfig(h5RConfig, accessToken, (h5RConfigWithVideoResources, videoOutputs) => {
+  console.log('downloadDriveFilesFromConfig2')
+  downloadDriveVideoFilesFromConfig(h5RConfig, accessToken, (h5RConfigWithVideoResources, videoOutputs) => {
+    console.log('downloadDriveAudioFilesFromConfig3')
     downloadDriveAudioFilesFromConfig(h5RConfigWithVideoResources, accessToken, (h5RConfigWithAudioAndVideoResources, audioOutputs) => {
+      console.log('h5RConfigWithAudioAndVideoResources', h5RConfigWithAudioAndVideoResources)
       callback(h5RConfigWithAudioAndVideoResources, videoOutputs, audioOutputs)
     })
   })
 }
 
-function downloadDriveFilesFromConfig(h5RConfig, accessToken, callback) {
+function downloadDriveVideoFilesFromConfig(h5RConfig, accessToken, callback) {
 
   let outputs = []
   let outputCount = 0
@@ -293,7 +296,7 @@ function downloadDriveAudioFilesFromConfig(h5RConfig, accessToken, callback) {
 
             loopAsync(i, j + 1)
           })
-          .pipe(fs.createWriteStream(`drive-${i}-${j}.mp4`))
+          .pipe(fs.createWriteStream(`drive-audio-${i}-${j}.mp3`))
     } else if (i < h5RConfig.length) {
       loopAsync(i + 1, 0)
     } else {
