@@ -16,6 +16,7 @@ export class AppComponent {
 
   // Keys = Object.keys
   title = 'storyreport';
+  selectedPage = 0;
 
   get closeMePage() {
     return window.location.href.match(/#closeme/) !== null
@@ -27,6 +28,7 @@ export class AppComponent {
     stepCount: number = 0;
 
     addStory() {
+      this.selectedPage = this.data.length;
       this.data.push({});
     }
     test() {

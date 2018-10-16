@@ -52,7 +52,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     //TODO: get height
     let video:any = window.document.getElementById(this.index_video) as HTMLVideoElement;
     if (!video) {
-      return '0%';
+      return '0px';
     }
     return `${(this.data.crop.offset.x * video.offsetWidth + this.data.crop.aspectRatio * video.offsetHeight)}px`;
   }
@@ -60,7 +60,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
     //TODO: get height
     let video:any = window.document.getElementById(this.index_video) as HTMLVideoElement;
     if (!video) {
-      return '0%';
+      return '0px';
     }
     let margin = this.data.crop.offset.x * video.offsetWidth + this.data.crop.aspectRatio * video.offsetHeight;
     return `${(video.offsetWidth - margin)}px`;

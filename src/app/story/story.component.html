@@ -1,11 +1,13 @@
-<mat-card class="example-card">
-  <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
-    <!-- <button mat-icon-button><mat-icon>add</mat-icon></button> -->
+<div class="story">
+  <div class="title-icon">
+    <mat-icon>local_movies</mat-icon>
+  </div>
 
-    <mat-card-title>
-      <!-- <mat-form-field> -->
+<!-- <mat-card class="example-card"> -->
+  <!-- <mat-card-header> -->
+    <!-- <mat-card-title> -->
         <mat-select
+          class="title-select"
           (change)="update()"
           placeholder="Select page"
           [(ngModel)]="selectedPage">
@@ -14,10 +16,26 @@
             [value]="p">
             {{p.title}}</mat-option>
         </mat-select>
+
+        <div
+          class="summary"
+          *ngIf="selectedPage.page"
+          [ngStyle]="{'display': showDetails ? 'none':''}">
+          {{pageUrl}} {{'[ #' + startHash + ' - #' + endHash + ' ]'}}
+          <mat-icon
+            *ngFor="let d of data"
+            [ngStyle]="{'color': d.colorkey}"
+            class="summary-icon">movie</mat-icon>
+          <mat-icon
+            *ngFor="let d of audio"
+            class="summary-icon">audiotrack</mat-icon>
+        </div>
       <!-- </mat-form-field> -->
 
-    </mat-card-title>
-    <mat-card-subtitle *ngIf="selectedPage.page">
+    <!-- </mat-card-title> -->
+    <div
+      *ngIf="selectedPage.page"
+      [ngStyle]="{'display': showDetails ? '':'none'}">
       <div class="page-description">
         {{selectedPage.description}}
       </div>
@@ -63,11 +81,9 @@
         (click)="pagePreview()">
         <mat-icon aria-label="Example icon-button with a heart icon">open_in_browser</mat-icon>
       </button>
-
-    </mat-card-subtitle>
-  </mat-card-header>
-  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-  <mat-card-content *ngIf="selectedPage.page">
+<!--
+    </div>
+  <div *ngIf="selectedPage.page"> -->
 
 
 
@@ -159,8 +175,9 @@
       <mat-icon>cloud_upload</mat-icon>
       Upload & process</button> -->
 
-  </mat-card-content>
+  </div>
 
   <mat-card-actions>
   </mat-card-actions>
-</mat-card>
+<!-- </mat-card> -->
+</div>

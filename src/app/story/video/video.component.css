@@ -6,6 +6,9 @@ mat-slider {
   width: 100%;
 }
 
+.page-preview {
+  margin-bottom: -10px;
+}
 
 video {
   width: 100%;

@@ -1,3 +1,35 @@
+.story {
+  border-left: 5px solid #0000004d;
+  margin-left: 25px;
+  padding-left: 10px;
+}
+.content {
+  margin-left: 52px;
+}
+
+.title-icon {
+  position: absolute;
+  z-index: 2;
+  margin-left: -50px;
+  margin-top: -15px;
+  background: white;
+}
+.title-select {
+  min-height: 80px;
+  padding-left: 80px;
+
+}
+
+.title-icon mat-icon {
+  position: relative;
+  font-size: 52px;
+  border: 2px solid black;
+  padding: 11px;
+  min-width: 52px;
+  border-radius: 50%;
+  min-height: 52px;
+}
+
 .btn-video-upload mat-icon {
   font-size: 80px;
   width: 80px;
@@ -19,6 +51,18 @@
 
 mat-select {
     font-size: 32px;
+    width: 250px;
+}
+.summary {
+  color: grey;
+}
+.summary-icon {
+  font-size: 21px;
+  border: 1px solid grey;
+  border-radius: 50%;
+  padding-left: 3px;
+  padding-top: 3px;
+  margin-left: 5px;
 }
 
 mat-form-field {
@@ -39,6 +83,7 @@ mat-form-field {
 
 .page-preview {
   float: right;
+  margin-bottom: -10px;
 }
 
 .mat-card-header-text {

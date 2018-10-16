@@ -38,6 +38,8 @@
 
   <app-story
       *ngFor="let d of Keys(data)"
+      [showDetails]="selectedPage == d"
+      (click)="selectedPage=d;"
       [index]="d"
       (update)="data[d] = $event; test()">
   </app-story>
