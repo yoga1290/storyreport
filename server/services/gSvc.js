@@ -63,6 +63,56 @@ function postFilesToDrive (accessToken, req, callback) {
     return req.pipe(busboy);
 }
 
+function postFilesToLocalDisk (req, callback) {
+    var busboy = new Busboy({headers: req.headers});
+    let videoWebContentLinks = []
+    let audioWebContentLinks = []
+    let fileStreamsRecievedCount = 0
+    let driveResponseCount = 0
+    let reqBody = {}
+    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+      reqBody[fieldname] = val;
+    });
+    busboy.on('file', function (fieldname, fileStream, filename, encoding, mimetype) {
+
+        fileStreamsRecievedCount++;
+        console.log('busboy:file', fileStreamsRecievedCount);
+
+        fileStream.on('data', function (data) {
+            console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+        });
+        fileStream.on('end', function () {
+            console.log('File [' + fieldname + '] Finished');
+        });
+        // uploadFileStreamToDrive(accessToken, fileStream, (err, webContentLink) => {
+        let fileName = `storyreport-resource-${fileStreamsRecievedCount}-${fieldname}`
+        fileStream.pipe(fs.createWriteStream(fileName));
+        if (fieldname === 'audio') {
+          audioWebContentLinks.push(fileName)
+        } else {
+          videoWebContentLinks.push(fileName) //TODO
+        }
+          // driveResponseCount++;
+          // console.log('busboy:file counts:', audioWebContentLinks, videoWebContentLinks, fileStreamsRecievedCount, driveResponseCount)
+          // if (fileStreamsRecievedCount <= driveResponseCount) {
+            callback(videoWebContentLinks, audioWebContentLinks, reqBody)
+          // }
+        // })
+        // var saveTo = path.join(__dirname, 'dir', path.basename(filename));
+        // var outStream = fs.createWriteStream(saveTo);
+        // fileStream.pipe(outStream);
+    });
+
+    busboy.on('finish', function () {
+        console.log('busboy:finish')
+        // if (fileStreamsRecievedCount <= driveResponseCount) {
+          // callback([], reqBody)
+          callback(videoWebContentLinks, audioWebContentLinks, reqBody)
+        // }
+    });
+    return req.pipe(busboy);
+}
+
 // https://developers.google.com/drive/api/v3/multipart-upload
 // https://developers.google.com/drive/api/v3/reference/files/create
 // https://stackoverflow.com/a/40488606/1683797
@@ -375,6 +425,38 @@ function mapDriveFilesToAudioEntries(entries, files) {
   return entries;
 }
 
+
+function mapLocalFilesToEntries(entries, files) {
+  let i = 0;
+  if (files && files.length > 0) {
+    entries = entries.map((entry) => {
+      if (entry.overlay && entry.overlay.length > 0) {
+        entry.overlay = entry.overlay.map((it) => {
+          it.video = (i < files.length && files[i]) ? files[i++]:'';
+          return it;
+        });
+      }
+      return entry;
+    });
+  }
+  return entries;
+}
+function mapLocalFilesToAudioEntries(entries, files) {
+  let i = 0;
+  if (files && files.length > 0) {
+    entries = entries.map((entry) => {
+      if (entry.audio && entry.audio.length > 0) {
+        entry.audio = entry.audio.map((it) => {
+          it.path = (i < files.length && files[i]) ? files[i++]:'';
+          return it;
+        });
+      }
+      return entry;
+    });
+  }
+  return entries;
+}
+
 module.exports = {
 
   // "https://www.googleapis.com/auth/drive.file"
@@ -393,6 +475,9 @@ module.exports = {
   uploadFile,
   mapDriveFilesToEntries,
   mapDriveFilesToAudioEntries,
+  postFilesToLocalDisk,
+  mapLocalFilesToEntries,
+  mapLocalFilesToAudioEntries,
 
   getLoginURL (state) {
     // console.log(JSON.stringify(req.body))

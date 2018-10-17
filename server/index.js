@@ -9,8 +9,11 @@ const {
   getLoginURL,
   postFilesToDrive,
   oauthCodeExchange,
+  postFilesToLocalDisk,
   mapDriveFilesToEntries,
-  mapDriveFilesToAudioEntries
+  mapDriveFilesToAudioEntries,
+  mapLocalFilesToEntries,
+  mapLocalFilesToAudioEntries
 } = gSvc
 
 const { origins, exitTokenPage } = require('./config')
@@ -30,8 +33,12 @@ console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 app.set('port', (process.env.PORT || 5000));
 
 app.get('/drive/login', (req, res, next) => {
-  let url = getLoginURL('NIY')
-  res.redirect(url)
+  if (PROD) {
+    let url = getLoginURL('NIY')
+    res.redirect(url)
+  } else {
+    res.redirect(`${exitTokenPage}?access_token=a&refresh_token=b`)
+  }
 })
 
 app.post('/drive/upload', (req, res, next) => {
@@ -39,16 +46,28 @@ app.post('/drive/upload', (req, res, next) => {
   let accessToken = req.query.access_token
   let refreshToken = req.query.refresh_token
 
-  postFilesToDrive(accessToken, req, (driveFileIds, audioDriveFileIds, reqBody) => {
-    console.log('END OF REQUEST', driveFileIds, audioDriveFileIds, reqBody);
-    let h5RConfig = JSON.parse(reqBody.data)
-    h5RConfig = mapDriveFilesToEntries(h5RConfig, driveFileIds)
-    h5RConfig = mapDriveFilesToAudioEntries(h5RConfig, audioDriveFileIds)
+  if (PROD) {
+    postFilesToDrive(accessToken, req, (driveFileIds, audioDriveFileIds, reqBody) => {
+      console.log('END OF REQUEST', driveFileIds, audioDriveFileIds, reqBody);
+      let h5RConfig = JSON.parse(reqBody.data)
+      h5RConfig = mapDriveFilesToEntries(h5RConfig, driveFileIds)
+      h5RConfig = mapDriveFilesToAudioEntries(h5RConfig, audioDriveFileIds)
 
-    res.send({ done: 'ok', h5RConfig })
+      res.send({ done: 'ok', h5RConfig })
 
-    QueueSvc.queue(refreshToken, h5RConfig);
-  })
+      QueueSvc.queue(refreshToken, h5RConfig);
+    })
+  } else {
+    postFilesToLocalDisk(req, (localFileIds, audioLocalFileIds, reqBody) => {
+      console.log('END OF REQUEST', localFileIds, audioLocalFileIds, reqBody);
+      let h5RConfig = JSON.parse(reqBody.data)
+      h5RConfig = mapLocalFilesToEntries(h5RConfig, localFileIds)
+      h5RConfig = mapLocalFilesToAudioEntries(h5RConfig, audioLocalFileIds)
+
+      h5recorder(h5RConfig).then(res.send, res.send)
+    })
+  }
+
 })
 
 app.get('/_oauth', (req, res) => {
