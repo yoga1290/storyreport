@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { environment } from '../../environments/environment';
+// import * as PageConfig from './pages.json'
 
 @Component({
   selector: 'app-story',
@@ -16,24 +17,37 @@ export class StoryComponent implements OnInit {
   audio: any = []
   Keys: any = {}
 
-  queryString: {key:string, value:string}[] = []
+  queryString: {} = {}
 
-  Pages : {title, page, description}[] = [{ //TODO: config
+  Pages : {title:string, page:string, description:string, hash: string[], params:string[]}[] = [{ //TODO: config
     "title": "Blank",
     "page": "http://yoga1290.gitlab.io/h5r-pages/blank/",
-    "description": `Blank screen with green background, [#start - #end]`
+    "hash": ["start", "end"],
+    "params": [],
+    "description": `Green screen, [#start - #end]`
+  },
+
+  {
+    "title": "2 Card Page",
+    "page": "http://yoga1290.gitlab.io/h5r-pages/2cards/",
+    "hash": ["start", "0", "end"],
+    "params": [],
+    "description": `Green card followed by Red card, hash changes: [#start, #0, #end]`
+    // http://yoga1290.gitlab.io/h5r-pages/2cards/
   }, {
-    "title": "Cards",
-    "page": "http://yoga1290.gitlab.io/h5r-pages/cards/",
-    "description": `Requires query strings of title[] and body[],
-                    [#start, #0, #1, #n, #end]
-                    e.g: ?title=T1&body=B1&body=B2`
-    // http://yoga1290.gitlab.io/h5r-pages/cards/?title=title1&body=body1&title=title2&body=body2
+    "title": "Left Title",
+    "page": "http://yoga1290.gitlab.io/h5r-pages/left-center-text/",
+    "hash": ["start", "end"],
+    "params": ["title", "body"],
+    "description": `Green screen with 2 optional text; "title" & "body" are optional query string parameters`
+    // http://yoga1290.gitlab.io/h5r-pages/left-center-text/?title=title&body=body
   }, {
-    "title": "Story",
-    "page": "http://yoga1290.gitlab.io/h5r-pages/story/",
-    "description": `Query string must include: time, index & count`
-    // http://yoga1290.gitlab.io/h5r-pages/story/?time=2&count=3&index=1
+    "title": "Subtitle",
+    "page": "http://yoga1290.gitlab.io/h5r-pages/subtitle/",
+    "hash": ["start", "end"],
+    "params": ["text"],
+    "description": `Green screen with an optional subtitle; "text" is an optional query string parameter`
+    // http://yoga1290.gitlab.io/h5r-pages/subtitle/?text=subtitle
   }]
 
   startHash: string = 'start'
@@ -62,15 +76,14 @@ export class StoryComponent implements OnInit {
     let endHash = this.endHash
     let size = this.size
     let page = this.selectedPage.page + "?"
-          + this.queryString.map(it=>(it.key + '=' +it.value)).join('&');
+          + Object.keys(this.queryString).map(key=>(key + '=' +this.queryString[key])).join('&');
     let audio = this.audio
-
     return { page, overlay, startHash, endHash, size, audio };
   }
 
   get pageUrl() {
     return this.selectedPage.page + "?"
-          + this.queryString.map(it=>(it.key + '=' +it.value)).join('&')
+          + Object.keys(this.queryString).map(key=>(key + '=' +this.queryString[key])).join('&')
   }
 
   get jsonData() {
@@ -105,8 +118,7 @@ export class StoryComponent implements OnInit {
 
   pagePreview() {
     let url = this.selectedPage.page + "?"
-          + this.queryString.map(it=>(it.key + '=' +it.value)).join('&');
-    console.log(this.queryString, this.queryString.map(it=>(it.key + '=' +it.value)),  url )
+          + Object.keys(this.queryString).map(key=>(key + '=' +this.queryString[key])).join('&');
     window.open(url, '_blank')
   }
 

@@ -40,40 +40,6 @@
         {{selectedPage.description}}
       </div>
 
-      <mat-form-field>
-        <input matInput placeholder="Start Hash"
-          [(ngModel)]="startHash"
-          (keyup)="update()">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="End Hash"
-          [(ngModel)]="endHash"
-          (keyup)="update()">
-      </mat-form-field>
-
-
-      <div *ngFor="let q of queryString" class="query-string">
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="query key"
-            [(ngModel)]="q.key"
-            (keyup)="update()">
-        </mat-form-field>
-        <mat-form-field>
-          <input
-            matInput
-            placeholder="value"
-            [(ngModel)]="q.value"
-            (keyup)="update()">
-        </mat-form-field>
-      </div>
-
-      <button
-        mat-stroked-button
-        (click)="queryString.push({key:'', value:''})">
-        + query string
-      </button>
       <button
         class="page-preview"
         mat-icon-button
@@ -81,6 +47,37 @@
         (click)="pagePreview()">
         <mat-icon aria-label="Example icon-button with a heart icon">open_in_browser</mat-icon>
       </button>
+
+      <mat-select
+        class="hash-select"
+        (change)="update()"
+        placeholder="Start record page fragment"
+        [(ngModel)]="startHash">
+        <mat-option
+          *ngFor="let h of selectedPage.hash"
+          [value]="h">#{{h}}</mat-option>
+      </mat-select>
+
+      <mat-select
+        class="hash-select"
+        (change)="update()"
+        placeholder="End record page fragment"
+        [(ngModel)]="endHash">
+        <mat-option
+          *ngFor="let h of selectedPage.hash"
+          [value]="h">#{{h}}</mat-option>
+      </mat-select>
+
+      <div *ngFor="let p of selectedPage.params" class="query-string">
+        <mat-form-field>
+          <input
+            matInput
+            [placeholder]="p"
+            [(ngModel)]="queryString[p]"
+            (keyup)="update()">
+        </mat-form-field>
+      </div>
+
 <!--
     </div>
   <div *ngIf="selectedPage.page"> -->

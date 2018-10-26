@@ -74,7 +74,7 @@ mat-form-field {
 }
 
 .query-string {
-  margin-top: 10px;
+  font-size: 32px;
 }
 
 .page-description {
@@ -94,6 +94,13 @@ mat-card-header div {
     width: 100%;
 }
 
-.mat-expansion-panel-body {
-    padding: 0 5px 16px;
+button.page-preview {
+  position: relative;
+  bottom: 50px;
+}
+
+.hash-select {
+  margin-bottom: 50px;
+  margin-left: 10px;
+  margin-right: 20px;
 }
