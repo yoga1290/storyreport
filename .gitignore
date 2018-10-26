@@ -43,3 +43,5 @@ server/node_modules/
 server/package-lock\.json
 
 storyreport/
+
+public/
