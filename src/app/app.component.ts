@@ -32,6 +32,14 @@ export class AppComponent {
       this.selectedPage = this.data.length;
       this.data.push({});
     }
+
+    onStoryDelete(index) {
+      console.log('onStoryDelete', index, this.data)
+      this.data.splice(index, 1);
+      console.log('onStoryDelete', this.data)
+
+    }
+
     test() {
       console.log(this.data)
     }

@@ -81,9 +81,8 @@ mat-form-field {
   margin-bottom: 20px;
 }
 
-.page-preview {
+.page-remove {
   float: right;
-  margin-bottom: -10px;
 }
 
 .mat-card-header-text {
@@ -97,6 +96,12 @@ mat-card-header div {
 button.page-preview {
   position: relative;
   bottom: 50px;
+  margin-top: 30px;
+  /* float: right; */
+  margin-bottom: -10px;
+}
+button.page-remove {
+  margin-bottom: 32px;
 }
 
 .hash-select {

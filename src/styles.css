@@ -9,3 +9,10 @@ mat-card {
 .mat-card-header-text {
     width: 100%;
 }
+
+
+.title-select {
+  min-height: 80px;
+  padding-left: 80px;
+  min-width: 50%;
+}

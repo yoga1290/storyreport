@@ -43,8 +43,7 @@ app.get('/drive/login', (req, res, next) => {
 
 app.post('/drive/upload', (req, res, next) => {
   console.log('/drive/upload')
-  let accessToken = req.query.access_token
-  let refreshToken = req.query.refresh_token
+  let { accessToken = '', refreshToken = '' } = req.query
 
   if (PROD) {
     postFilesToDrive(accessToken, req, (driveFileIds, audioDriveFileIds, reqBody) => {

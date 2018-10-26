@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 export class StoryComponent implements OnInit {
 
   @Output("update") _update: EventEmitter<any> = new EventEmitter<any>()
+  @Output("remove") remove: EventEmitter<any> = new EventEmitter<any>()
   @Input("showDetails") showDetails: boolean = true
 
   endpoint: string = environment.apiUrl
@@ -30,9 +31,9 @@ export class StoryComponent implements OnInit {
   {
     "title": "2 Card Page",
     "page": "http://yoga1290.gitlab.io/h5r-pages/2cards/",
-    "hash": ["start", "0", "end"],
+    "hash": ["start", "card2", "end"],
     "params": [],
-    "description": `Green card followed by Red card, hash changes: [#start, #0, #end]`
+    "description": `Green card followed by Red card, hash changes: [#start, #card2, #end]`
     // http://yoga1290.gitlab.io/h5r-pages/2cards/
   }, {
     "title": "Left Title",
@@ -94,7 +95,7 @@ export class StoryComponent implements OnInit {
     this.Keys = Object.keys
   }
 
-  onDelete(index) {
+  onVideoDelete(index) {
     this.data.splice(index, 1);
     this.update();
   }

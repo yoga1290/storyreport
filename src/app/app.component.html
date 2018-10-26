@@ -41,7 +41,8 @@
       [showDetails]="selectedPage == d"
       (click)="selectedPage=d;"
       [index]="d"
-      (update)="data[d] = $event; test()">
+      (remove)="onStoryDelete(d)"
+      (update)="data[d] = $event;">
   </app-story>
 
 

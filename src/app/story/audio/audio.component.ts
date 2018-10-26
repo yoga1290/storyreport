@@ -45,7 +45,7 @@ export class AudioComponent implements OnInit {
 
   }
 
-  time : {start: number, end: number} = undefined
+  time : {start: number, end: number} = {start: 0, end: 1<<20}
   constructor() {
 
   }
