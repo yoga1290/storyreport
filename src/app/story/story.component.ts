@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-story',
@@ -10,8 +11,7 @@ export class StoryComponent implements OnInit {
   @Output("update") _update: EventEmitter<any> = new EventEmitter<any>()
   @Input("showDetails") showDetails: boolean = true
 
-  endpoint: string = 'https://storyreport.herokuapp.com/submit'
-  // endpoint: string = 'http://localhost:5000/submit' //TODO: config
+  endpoint: string = environment.apiUrl
   data: any = []
   audio: any = []
   Keys: any = {}

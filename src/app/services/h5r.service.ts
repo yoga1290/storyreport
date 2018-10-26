@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -37,11 +38,7 @@ export class H5RService {
     });
 
     console.log('formData', formData);
-    return this.http.post<any>("https://storyreport.herokuapp.com/submit", formData, httpOptions);//.pipe( //login
-    // return this.http.post<any>("https://storyreport.herokuapp.com/submit", formData, httpOptions);//.pipe( //login
-      // tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
-      // catchError(this.handleError<Hero>('addHero'))
-    //);
+    return this.http.post<any>(`${environment.apiUrl}/submit`, formData, httpOptions);
   }
 
   upload (accessToken: string, refreshToken: string, files: any, audio:any, data : any) : any { //Observable<any> {
@@ -67,10 +64,6 @@ export class H5RService {
 
     console.log('formData', formData);
     // return this.http.post<any>("https://storyreport.herokuapp.com/submit", formData, httpOptions);//.pipe( //login
-    // return this.http.post<any>(`http://localhost:5000/drive/upload?access_token=${accessToken}&refresh_token=${refreshToken}`, formData, httpOptions);//.pipe( //login
-    return this.http.post<any>(`https://storyreport.herokuapp.com/drive/upload?access_token=${accessToken}&refresh_token=${refreshToken}`, formData, httpOptions);//.pipe( //login
-      // tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
-      // catchError(this.handleError<Hero>('addHero'))
-    //);
+    return this.http.post<any>(`${environment.apiUrl}/drive/upload?access_token=${accessToken}&refresh_token=${refreshToken}`, formData, httpOptions);
   }
 }
