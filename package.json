@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --env=prod --prod --delete-output-path --base-href /storyreport --output-path public --deploy-url /storyreport/",
+    "build": "ng build --prod --delete-output-path --base-href /storyreport --output-path public --deploy-url /storyreport/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
