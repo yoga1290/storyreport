@@ -29,11 +29,11 @@ export class StoryComponent implements OnInit {
   },
 
   {
-    "title": "2 Card Page",
+    "title": "2 Card Transition",
     "page": "http://yoga1290.gitlab.io/h5r-pages/2cards/",
-    "hash": ["start", "card2", "end"],
-    "params": [],
-    "description": `Green card followed by Red card, hash changes: [#start, #card2, #end]`
+    "hash": ["start", "end"],
+    "params": ["duration"],
+    "description": `Green card followed by Red card, hash changes: [#start, #end]`
     // http://yoga1290.gitlab.io/h5r-pages/2cards/
   }, {
     "title": "Left Title",
