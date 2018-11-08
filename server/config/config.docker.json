@@ -1,0 +1,7 @@
+{
+  "redirectUri": "http://backend/_oauth",
+  "origins": "*",
+  "exitTokenPage": "http://localhost:4200/#closeme",
+  "clientId": "",
+  "clientSecret": ""
+}
