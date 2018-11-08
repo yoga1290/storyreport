@@ -63,7 +63,13 @@ app.post('/drive/upload', (req, res, next) => {
       h5RConfig = mapLocalFilesToEntries(h5RConfig, localFileIds)
       h5RConfig = mapLocalFilesToAudioEntries(h5RConfig, audioLocalFileIds)
 
-      h5recorder(h5RConfig).then(res.send, res.send)
+      h5recorder(h5RConfig).then((output)=>{
+          console.log('respo');
+          res.end(JSON.stringify({output}));
+          //TODO: strem file may be for localhost
+      }, (err) =>{
+          console.log('error', err);
+      })
     })
   }
 
