@@ -26,9 +26,11 @@ function execEntry({ refreshToken, h5RConfig }, callback) {
           })
           callback()
 
-        }, (outputVideo, b) => {
-          console.log('TODO2', outputVideo, b)
+        }, (err) => {
+          console.log('TODO2', err)
           callback()
+          throw err
+          process.exit(1)
         })
     })
 
