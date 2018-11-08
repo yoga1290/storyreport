@@ -19,6 +19,11 @@ export class AppComponent {
   title = 'storyreport';
   selectedPage = 0;
 
+  fileCount = 0;
+  progressBuffer = 0
+  progressValue = 0
+
+
   get closeMePage() {
     return window.location.href.match(/#closeme/) !== null
   }
@@ -99,7 +104,17 @@ export class AppComponent {
         }
       }
 
-      this.h5RService.upload(accessToken, refreshToken, videos, audios, this.data).subscribe((resp) => {
+      this.fileCount = audios.length + videos.length
+      console.log('this.fileCount', this.fileCount)
+      this.h5RService.upload(accessToken, refreshToken, videos, audios, this.data, ({ type, loaded, total })=>{
+        if (this.fileCount < 1) return;
+        // console.log('this.fileCount', this.fileCount)
+
+        let sec = Math.floor(100 / this.fileCount)
+        this.progressBuffer = sec * (type + 1)
+        this.progressValue = sec*type + Math.ceil(loaded * 100 / total)
+
+      }).subscribe((resp) => {
         this.stepCount = 3
         console.log('uploadFilesToDrive', resp)
       })

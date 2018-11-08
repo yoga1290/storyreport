@@ -48,7 +48,7 @@ export class H5RService {
     return this.http.post<any>(`${environment.apiUrl}/submit`, formData, httpOptions);
   }
 
-  upload (accessToken: string, refreshToken: string, files: any, audio:any, data : any) : any { //Observable<any> {
+  upload (accessToken: string, refreshToken: string, files: any, audio:any, data : any, progressCallback) : any { //Observable<any> {
     let httpOptions = {
       // headers: new HttpHeaders({
       //   // 'Content-Type':  'multipart/form-data'
@@ -76,8 +76,8 @@ export class H5RService {
       formData,
       httpOptions);
     return this.http.request(req).pipe(
-      map(console.log),
-      tap(console.log),
+      map(progressCallback),
+      // tap(console.log),
       last(), // return last (completed) message to caller
       catchError((err)=>{
           console.log('error', err)

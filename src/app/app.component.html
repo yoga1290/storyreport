@@ -73,6 +73,14 @@
         <mat-icon *ngIf="stepCount > 1" class="green">{{ (stepCount > 2) ? 'check_circle':'sync'}}</mat-icon>
           Uploading files to Drive
       </mat-list-item>
+
+      <mat-progress-bar
+            color="primary"
+            mode="buffer"
+            [value]="progressValue"
+            [bufferValue]="progressBuffer">
+        </mat-progress-bar>
+
       <mat-list-item role="listitem">
         <mat-icon *ngIf="stepCount > 1" class="green">{{ (stepCount > 2) ? 'check_circle':'sync'}}</mat-icon>
           Queue {{'{'}} Drive's RefreshToken, H5Configuration {{'}'}}
